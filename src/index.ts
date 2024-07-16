@@ -1,25 +1,18 @@
-import { Hono } from 'hono';
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import { users } from './db/schema';
+import { createHonoMiddleware } from "@fiberplane/hono";
+import { Hono } from "hono";
+import { api } from "./api";
 
 type Bindings = {
+  // biome-ignore lint/style/useNamingConvention: Environment variable
   DATABASE_URL: string;
 };
 
-const app = new Hono<{ Bindings: Bindings }>()
+// biome-ignore lint/style/useNamingConvention: Hono convention
+const app = new Hono<{ Bindings: Bindings }>();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.use(createHonoMiddleware(app));
 
-app.get('/api/users', async (c) => {
-  const sql = neon(c.env.DATABASE_URL)
-  const db = drizzle(sql);
+app.route('/api', api);
 
-  return c.json({
-    users: await db.select().from(users)
-  })
-})
-
-export default app
+// biome-ignore lint/style/noDefaultExport: Hono convention
+export default app;

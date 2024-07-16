@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1721124110485,
+      "tag": "0000_small_revanche",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1721130190462,
+      "tag": "0001_polite_absorbing_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1721132128589,
+      "tag": "0002_good_ted_forrester",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1721135511913,
+      "tag": "0003_dear_blizzard",
+      "breakpoints": true
+    }
+  ]
+}

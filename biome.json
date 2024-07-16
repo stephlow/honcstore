@@ -1,0 +1,207 @@
+{
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "all": true,
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": { "maxAllowedComplexity": 15 }
+        }
+      },
+      "correctness": {
+        "noUndeclaredVariables": "off",
+        "noUnusedVariables": "warn",
+        "noUnusedImports": "warn",
+        "useExhaustiveDependencies": {
+          "level": "error",
+          "options": {
+            "hooks": [{ "name": "useHandler", "stableResult": 1 }]
+          }
+        }
+      },
+      "nursery": {
+        "useImportRestrictions": "error"
+      },
+      "performance": {
+        "noBarrelFile": "off",
+        "noReExportAll": "off"
+      },
+      "style": {
+        "noImplicitBoolean": "off",
+        "noUselessElse": "off",
+        "useShorthandArrayType": "off",
+        "useFilenamingConvention": {
+          "level": "warn",
+          "options": {
+            "strictCase": false,
+            "requireAscii": true,
+            "filenameCases": ["camelCase", "export"]
+          }
+        },
+        "useConsistentArrayType": {
+          "level": "warn",
+          "options": { "syntax": "generic" }
+        }
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noConfusingVoidType": "off"
+      }
+    }
+  },
+  "files": {
+    "ignore": [
+      "*.d.ts",
+      ".nx",
+      ".yarn",
+      "dist",
+      "node_modules",
+      "target",
+      "providerTypes.ts",
+      "api",
+      "explorer/build",
+      "os",
+      "release.json",
+      "package.json",
+      "studio/build",
+      "studio/src/services/DataSources/providerRuntime",
+      "studio/src/services/FiberKit/ts-bindings",
+      "studio/src/theme/GlobalStyleVariables.tsx",
+      "studio/themes/templates",
+      "studio/playwright-report",
+      "studio/test-results"
+    ]
+  },
+  "overrides": [
+    {
+      "include": ["explorer", "studio"],
+      "ignore": ["studio/tools"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsoleLog": "warn"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "studio/cypress/e2e",
+        "studio/cypress/support",
+        "studio/playwright",
+        "studio/tools/scripts",
+        "explorer/cypress/e2e",
+        "explorer/cypress/support",
+        "explorer/tools",
+        "scripts",
+        "tools",
+        "fiberbot"
+      ],
+      "ignore": ["studio/tools/config/jest", "explorer/tools/config/jest"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": {
+              "level": "warn",
+              "options": {
+                "strictCase": false,
+                "requireAscii": true,
+                "filenameCases": ["kebab-case", "export"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "include": ["explorer", "fiberbot", "studio/cypress"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveCognitiveComplexity": {
+              "level": "warn",
+              "options": { "maxAllowedComplexity": 35 }
+            }
+          },
+          "nursery": {
+            "useImportRestrictions": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off",
+            "useNamingConvention": "off"
+          },
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "studio/tools/config",
+        "explorer/tools/config",
+        "studio/playwright.config.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["studio/src/components/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveCognitiveComplexity": {
+              "level": "warn",
+              "options": { "maxAllowedComplexity": 25 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "include": ["studio/src/reducers", "explorer/src/reducers"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noParameterAssign": "off",
+            "useDefaultParameterLast": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["explorer/src", "explorer/tools/scripts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "useSimplifiedLogicExpression": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["scripts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsoleLog": "off"
+          }
+        }
+      }
+    }
+  ]
+}
