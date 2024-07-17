@@ -1,6 +1,12 @@
 name = "honcstore"
 compatibility_date = "2023-12-01"
 
+[vars]
+DATABASE_URL = "postgresql://honcstore_owner:O4g5XeGvVCFJ@ep-dawn-dust-a2gxf6ot.eu-central-1.aws.neon.tech/honcstore?sslmode=require"
+JWT_SECRET = "kaasbroodje"
+SALT_ROUNDS = 10
+
+
 # [vars]
 # MY_VAR = "my-variable"
 
@@ -19,4 +25,3 @@ compatibility_date = "2023-12-01"
 
 # [ai]
 # binding = "AI"
-
