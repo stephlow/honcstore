@@ -3,8 +3,10 @@ import { productsApi } from "./products";
 import { usersApi } from "./users";
 import { cartsApi } from "./carts";
 
-export const api = new Hono();
+export const api = new Hono()
+  .route('/carts', cartsApi)
+  .route('/products', productsApi)
+  .route('/users', usersApi);
 
-api.route('/carts', cartsApi);
-api.route('/products', productsApi);
-api.route('/users', usersApi);
+
+export type ApiType = typeof api;
