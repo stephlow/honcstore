@@ -12,8 +12,10 @@ export const usersApi = new Hono()
   .get('/', async (context) => {
     const db = getDatabase(context);
 
+    const users = await db.query.users.findMany();
+
     return context.json({
-      users: await db.select().from(users),
+      users,
     });
   })
   .post("/", zValidator('json', newUserSchema), async (context: Context) => {

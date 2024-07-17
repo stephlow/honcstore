@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   integer,
   jsonb,
@@ -19,6 +20,10 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const usersRelations = relations(users, ({ many }) => ({
+  carts: many(carts)
+}));
+
 export const selectUserSchema = createSelectSchema(users);
 export type SelectUser = z.infer<typeof selectUserSchema>;
 
@@ -34,6 +39,10 @@ export const products = pgTable("products", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const productsRelations = relations(products, ({ many }) => ({
+  cartItems: many(cartItems)
+}));
+
 export const selectProductSchema = createSelectSchema(products);
 export type SelectProduct = z.infer<typeof selectProductSchema>;
 
@@ -46,6 +55,14 @@ export const carts = pgTable("carts", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export const cartsRelations = relations(carts, ({ one, many }) => ({
+  cartItems: many(cartItems),
+  user: one(users, {
+    fields: [carts.userId],
+    references: [users.id]
+  }),
+}));
 
 export const selectCartSchema = createSelectSchema(carts);
 export type SelectCart = z.infer<typeof selectCartSchema>;
@@ -64,6 +81,17 @@ export const cartItems = pgTable("cart_items", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  cart: one(carts, {
+    fields: [cartItems.cartId],
+    references: [carts.id]
+  }),
+  product: one(products, {
+    fields: [cartItems.productId],
+    references: [products.id]
+  })
+}));
 
 export const selectCartItemSchema = createSelectSchema(cartItems);
 export type SelectItemCart = z.infer<typeof selectCartItemSchema>;

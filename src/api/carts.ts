@@ -1,14 +1,24 @@
 import { Hono } from "hono";
 import { InsertCart, InsertCartItem, cartItems, carts, getDatabase, insertCartItemSchema, insertCartSchema } from "../db";
-import { eq, sql } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
+import { eq } from "drizzle-orm";
 
 export const cartsApi = new Hono()
   .get('/', async (context) => {
     const db = getDatabase(context);
 
+    const carts = await db.query.carts.findMany({
+      with: {
+        cartItems: {
+          with: {
+            product: true,
+          }
+        },
+      },
+    })
+
     return context.json({
-      carts: await db.select().from(carts),
+      carts,
     });
   })
   .post('/', zValidator('json', insertCartSchema), async (context) => {
@@ -16,18 +26,38 @@ export const cartsApi = new Hono()
 
     const payload = await context.req.json<InsertCart>();
 
-    const [cart] = await db.insert(carts).values(payload).returning();
+    const [{ id }] = await db.insert(carts).values(payload).returning({ id: carts.id });
+
+    const cart = await db.query.carts.findFirst({
+      with: {
+        cartItems: {
+          with: {
+            product: true,
+          }
+        },
+      },
+      where: eq(carts.id, id),
+    })
 
     return context.json({
       cart
     })
   })
   .get('/:id', async (context) => {
-    const id = context.req.param('id');
+    const id = Number.parseInt(context.req.param('id'));
 
     const db = getDatabase(context);
 
-    const [cart] = await db.select().from(carts).where(sql`${carts.id} = ${id}`).innerJoin(cartItems, eq(carts.id, cartItems.cartId));
+    const cart = await db.query.carts.findFirst({
+      with: {
+        cartItems: {
+          with: {
+            product: true,
+          }
+        },
+      },
+      where: eq(carts.id, id),
+    });
 
     return context.json({
       cart

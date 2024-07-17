@@ -1,14 +1,16 @@
 import { Hono } from "hono";
 import { InsertProduct, getDatabase, insertProductSchema, products } from "../db";
-import { sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 
 export const productsApi = new Hono()
   .get("/", async (context) => {
     const db = getDatabase(context);
 
+    const products = await db.query.products.findMany()
+
     return context.json({
-      products: await db.select().from(products)
+      products,
     });
   })
   .post("/", zValidator('json', insertProductSchema), async (context) => {
@@ -23,13 +25,19 @@ export const productsApi = new Hono()
     })
   })
   .get("/:id", async (context) => {
-    const id = context.req.param('id');
+    const id = Number.parseInt(context.req.param('id'));
 
     const db = getDatabase(context);
 
-    const [product] = await db.select().from(products).where(sql`${products.id} = ${id}`);
+    const product = await db.query.products.findFirst({
+      where: eq(products.id, id),
+    })
 
-    return context.json({
-      product,
-    });
+    if (product) {
+      return context.json({
+        product,
+      });
+    }
+
+    return context.json(null, 404);
   });
