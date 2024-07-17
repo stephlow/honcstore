@@ -1,6 +1,12 @@
-import { Hono } from "hono";
-import { getDatabase, users, insertUserSchema, InsertUser } from "../db";
+import { Context, Hono } from "hono";
+import { getDatabase, users, insertUserSchema } from "../db";
 import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+import { hashSync } from "bcrypt-edge";
+
+const newUserSchema = insertUserSchema.omit({ id: true, passwordHash: true }).extend({ password: z.string() });
+
+type NewUser = z.infer<typeof newUserSchema>;
 
 export const usersApi = new Hono()
   .get('/', async (context) => {
@@ -10,12 +16,17 @@ export const usersApi = new Hono()
       users: await db.select().from(users),
     });
   })
-  .post("/", zValidator('json', insertUserSchema), async (context) => {
+  .post("/", zValidator('json', newUserSchema), async (context: Context) => {
     const db = getDatabase(context);
 
-    const payload = await context.req.json<InsertUser>();
+    const { password, ...payload } = await context.req.json<NewUser>();
 
-    const [user] = await db.insert(users).values(payload).returning();
+    const insertUser = {
+      ...payload,
+      passwordHash: hashSync(password, context.env.SALT_ROUNDS)
+    };
+
+    const [user] = await db.insert(users).values(insertUser).returning();
 
     return context.json({
       user,
