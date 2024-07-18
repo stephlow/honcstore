@@ -12,8 +12,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
         <ProductImage />
       </div>
       <div className="flex flex-col gap-4">
-        <h1>{product.name}</h1>
-        <p>{product.description}</p>
+        <h1 className="text-xl font-medium">{product.name}</h1>
+        <p className="text-lg">{product.description}</p>
         <div data-mount="addToCart" data-props={JSON.stringify({ product })} />
       </div>
     </article>

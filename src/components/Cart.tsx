@@ -1,6 +1,7 @@
 import { useContext } from "hono/jsx";
 import { AppContext } from "../contexts";
 import { Bubble, HoverMenu } from "./UI";
+import { ProductImage } from "./ProductImage";
 
 export function Cart() {
   const { cart } = useContext(AppContext);
@@ -15,9 +16,19 @@ export function Cart() {
       }
     >
       {cart && (quantity ?? 0) > 0 ? (
-        <ul>
+        <ul className="flex flex-col gap-4">
           {cart.cartItems.map((cartItem) => {
-            return <li key={cartItem.id}>{cartItem.product.name}</li>;
+            return (
+              <li key={cartItem.id}>
+                <a href={`/product/${cartItem.product.slug}`} className="flex gap-4 p-4 rounded hover:bg-slate-200 
+">
+                  <div className="w-20">
+                    <ProductImage />
+                  </div>
+                  {cartItem.product.name}
+                </a>
+              </li>
+            );
           })}
         </ul>
       ) : (

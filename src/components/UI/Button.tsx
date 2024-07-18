@@ -7,7 +7,7 @@ type ButtonProps = PropsWithChildren<{
 export function Button({ children, onClick }: ButtonProps) {
   return (
     <button
-      className="p-4 bg-cyan-500 text-cyan-800 rounded hover:bg-cyan-400"
+      className="p-4 bg-pink-950 text-pink-500 rounded hover:bg-pink-800"
       type="button"
       onClick={onClick}
     >
