@@ -1,10 +1,11 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
 
-import { useState } from "hono/jsx";
+import { useEffect, useState } from "hono/jsx";
 import { createPortal, render, useMemo } from "hono/jsx/dom";
 import { Account, AddToCartButton, Cart } from "../components";
 import { AppContext, type AppState } from "../contexts";
+import { getCartById } from "../rpc";
 
 const COMPONENT_MAP = {
   account: Account,
@@ -28,6 +29,18 @@ function Root() {
         ),
       );
     });
+  }, []);
+
+  useEffect(() => {
+    const storedCartId = localStorage.getItem('cartId');
+    if (storedCartId) {
+      const cartId = Number.parseInt(storedCartId);
+      getCartById(cartId).then(({ cart }) => {
+        if (cart) {
+          setCart(cart);
+        }
+      })
+    }
   }, []);
 
   return (

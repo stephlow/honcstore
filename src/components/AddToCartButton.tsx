@@ -17,7 +17,10 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       (async () => {
         const handle = cart ?? (await createCart(auth?.user.id)).cart;
 
+
         if (handle) {
+          localStorage.setItem('cartId', String(handle.id));
+
           await addToCart(handle.id, product.id);
 
           setCart((await getCartById(handle.id)).cart);

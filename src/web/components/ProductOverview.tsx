@@ -5,7 +5,7 @@ export function ProductOverview({
   products,
 }: { products: Array<SelectProduct> }) {
   return (
-    <ul className="grid grid-cols-2 gap-8 -mx-4">
+    <ul className="grid grid-cols-2 gap-8 -mx-4 md:grid-cols-4">
       {products.map((product) => {
         return (
           <li key={product.id} className="flex flex-col gap-4">
