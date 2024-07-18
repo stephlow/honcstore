@@ -20,7 +20,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 // app.use(createHonoMiddleware(app));
 
 app.route("/", web);
-app.route("/api", api)
+app.route("/api", api);
 
 // biome-ignore lint/style/noDefaultExport: Hono convention
 export default app;

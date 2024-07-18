@@ -21,7 +21,7 @@ export const users = pgTable("users", {
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
-  carts: many(carts)
+  carts: many(carts),
 }));
 
 export const selectUserSchema = createSelectSchema(users);
@@ -40,7 +40,7 @@ export const products = pgTable("products", {
 });
 
 export const productsRelations = relations(products, ({ many }) => ({
-  cartItems: many(cartItems)
+  cartItems: many(cartItems),
 }));
 
 export const selectProductSchema = createSelectSchema(products);
@@ -60,7 +60,7 @@ export const cartsRelations = relations(carts, ({ one, many }) => ({
   cartItems: many(cartItems),
   user: one(users, {
     fields: [carts.userId],
-    references: [users.id]
+    references: [users.id],
   }),
 }));
 
@@ -85,12 +85,12 @@ export const cartItems = pgTable("cart_items", {
 export const cartItemsRelations = relations(cartItems, ({ one }) => ({
   cart: one(carts, {
     fields: [cartItems.cartId],
-    references: [carts.id]
+    references: [carts.id],
   }),
   product: one(products, {
     fields: [cartItems.productId],
-    references: [products.id]
-  })
+    references: [products.id],
+  }),
 }));
 
 export const selectCartItemSchema = createSelectSchema(cartItems);

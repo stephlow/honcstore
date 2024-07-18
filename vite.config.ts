@@ -85,7 +85,7 @@ export default defineConfig(({ mode }) => {
         adapter: cloudflareAdapter,
         entry: "./src/index.ts",
       }),
-      pages({ entry: './src/index.ts' }),
+      pages({ entry: "./src/index.ts" }),
     ],
   };
 });

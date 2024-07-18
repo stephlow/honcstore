@@ -12,4 +12,3 @@ export const api = new Hono()
 
 
 export type ApiType = typeof api;
-

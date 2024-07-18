@@ -1,24 +1,29 @@
-import type { JSX, ReactNode } from "hono/jsx";
+import type { PropsWithChildren } from "hono/jsx";
+import { Footer } from "./Footer";
 import { Header } from "./Header";
 
-type LayoutProps = {
-  children: ReactNode | JSX.Element;
-};
+type LayoutProps = PropsWithChildren<{
+  title?: string;
+}>;
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ title, children }: LayoutProps) {
+  const pageTitle = [title, "Honcstore"].filter(Boolean).join(" | ");
+
   return (
     <html lang="en">
+      <title>{pageTitle}</title>
+      <script src="https://cdn.tailwindcss.com" />
       {/* @ts-ignore */}
       {import.meta.env.PROD ? (
-        <script type='module' src='/static/client.js' />
+        <script type="module" src="/static/client.js" />
       ) : (
-        <script type='module' src='/src/client/index.tsx' />
+        <script type="module" src="/src/client/index.tsx" />
       )}
       <body>
         <Header />
-        <div id="root" />
-        {children}
+        <main className="container mx-auto p-8">{children}</main>
+        <Footer />
       </body>
     </html>
-  )
+  );
 }

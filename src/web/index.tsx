@@ -1,13 +1,11 @@
-import { eq } from 'drizzle-orm'
-import { Hono } from 'hono'
-import { getDatabase, products } from '../db'
-import { Layout, ProductList } from './components'
+import { eq } from "drizzle-orm";
+import { Hono } from "hono";
+import { getDatabase, products } from "../db";
+import { Layout, ProductDetail, ProductList } from "./components";
 
-export const web = new Hono()
+export const web = new Hono();
 
-
-
-web.get('/', async (context) => {
+web.get("/", async (context) => {
   const db = getDatabase(context);
 
   const products = await db.query.products.findMany();
@@ -15,12 +13,12 @@ web.get('/', async (context) => {
   return context.html(
     <Layout>
       <ProductList products={products} />
-    </Layout>
-  )
-})
+    </Layout>,
+  );
+});
 
-web.get('/products/:slug', async (context) => {
-  const slug = context.req.param('slug');
+web.get("/products/:slug", async (context) => {
+  const slug = context.req.param("slug");
 
   const db = getDatabase(context);
   const product = await db.query.products.findFirst({
@@ -28,12 +26,12 @@ web.get('/products/:slug', async (context) => {
   });
 
   if (!product) {
-    return context.redirect('/404');
+    return context.redirect("/404");
   }
 
   return context.html(
-    <Layout>
-      <pre>{JSON.stringify(product, null, 2)}</pre>
-    </Layout>
+    <Layout title={product.name}>
+      <ProductDetail product={product} />
+    </Layout>,
   );
 });
