@@ -1,8 +1,9 @@
-import { createHonoMiddleware } from "@fiberplane/hono";
+// import { createHonoMiddleware } from "@fiberplane/hono";
 import { Hono } from "hono";
 import type { JwtVariables } from "hono/jwt";
 
 import { api } from "./api";
+import { web } from "./web";
 
 type Bindings = {
   // biome-ignore lint/style/useNamingConvention: Environment variable
@@ -16,9 +17,10 @@ type Variables = JwtVariables;
 // biome-ignore lint/style/useNamingConvention: Hono convention
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 
-app.use(createHonoMiddleware(app));
+// app.use(createHonoMiddleware(app));
 
-app.route("/api", api);
+app.route("/", web);
+app.route("/api", api)
 
 // biome-ignore lint/style/noDefaultExport: Hono convention
 export default app;
