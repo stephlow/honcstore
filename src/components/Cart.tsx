@@ -16,16 +16,20 @@ export function Cart() {
       }
     >
       {cart && (quantity ?? 0) > 0 ? (
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-4 ">
           {cart.cartItems.map((cartItem) => {
             return (
               <li key={cartItem.id}>
-                <a href={`/product/${cartItem.product.slug}`} className="flex gap-4 p-4 rounded hover:bg-slate-200 
-">
+                <a href={`/product/${cartItem.product.slug}`} className="flex gap-4 p-4 rounded hover:bg-slate-200">
                   <div className="w-20">
                     <ProductImage />
                   </div>
-                  {cartItem.product.name}
+                  <div className="flex flex-col w-32">
+                    <h1 className="text-md font-medium">{cartItem.product.name}</h1>
+                    {cartItem.product.description && (
+                      <p className="text-xs">{cartItem.product.description}</p>
+                    )}
+                  </div>
                 </a>
               </li>
             );

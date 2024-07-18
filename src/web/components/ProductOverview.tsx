@@ -17,6 +17,11 @@ export function ProductOverview({
               <span className="text-lg font-medium">
                 {product.name}
               </span>
+              {product.description && (
+                <span className="text-sm">
+                  {product.description}
+                </span>
+              )}
             </a>
             <div
               className="px-4"

@@ -7,13 +7,15 @@ type ProductDetailProps = {
 
 export function ProductDetail({ product }: ProductDetailProps) {
   return (
-    <article className="flex gap-8">
-      <div className="min-w-72">
+    <article className="flex flex-col gap-8 md:flex-row">
+      <div className="min-w-72 md:min-w-96">
         <ProductImage />
       </div>
       <div className="flex flex-col gap-4">
         <h1 className="text-xl font-medium">{product.name}</h1>
-        <p className="text-lg">{product.description}</p>
+        {product.description && (
+          <p className="text-lg">{product.description}</p>
+        )}
         <div data-mount="addToCart" data-props={JSON.stringify({ product })} />
       </div>
     </article>

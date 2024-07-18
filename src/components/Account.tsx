@@ -30,8 +30,9 @@ function Profile() {
 function Unauthenticated() {
   return (
     <HoverMenu trigger={<div>Account</div>}>
-      <div className="flex gap-4">
+      <div className="flex gap-8 p-4">
         <LoginForm />
+        <div className="border-r border-slate-200" />
         <RegisterForm />
       </div>
     </HoverMenu>
@@ -51,6 +52,7 @@ function LoginForm() {
 
   return (
     <div className="flex flex-col gap-4">
+      <span className="text-xl font-medium">Login</span>
       <Label>Email</Label>
       <Input value={email} setValue={setEmail} />
       <Label>Password</Label>
@@ -71,6 +73,7 @@ function RegisterForm() {
 
   return (
     <div className="flex flex-col gap-4">
+      <span className="text-xl font-medium">Register</span>
       <Label>Email</Label>
       <Input value={email} setValue={setEmail} />
       <Label>Password</Label>
