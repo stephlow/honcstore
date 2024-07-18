@@ -36,7 +36,9 @@ export function Cart() {
           })}
         </ul>
       ) : (
-        "Your cart is empty!"
+        <div className="py-2 px-4 w-max">
+          Your cart is empty
+        </div>
       )}
     </HoverMenu>
   );
