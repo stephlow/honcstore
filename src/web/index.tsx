@@ -1,44 +1,39 @@
+import { eq } from 'drizzle-orm'
 import { Hono } from 'hono'
-import type { FC } from 'hono/jsx'
+import { getDatabase, products } from '../db'
+import { Layout, ProductList } from './components'
 
 export const web = new Hono()
 
-const Layout: FC = (props) => {
-  return (
-    <html lang="en">
-      {/* @ts-ignore */}
-      {import.meta.env.PROD ? (
-        <script type='module' src='/static/client.js' />
-      ) : (
-        <script type='module' src='/src/client/index.tsx' />
-      )}
-      <body><div id="root" />{props.children}</body>
-    </html>
-  )
-}
 
-const Top: FC<{ messages: Array<string> }> = (props: {
-  messages: Array<string>
-}) => {
-  return (
-    <div>
-      <h1>Hello Hono!</h1>
-      <ul>
-        {props.messages.map((message) => {
-          return <li key={message}>{message}!!?</li>
-        })}
-      </ul>
-    </div>
-  )
-}
 
-web.get('/', (context) => {
-  const messages = ['Good Morning', 'Good Evening', 'Good Night']
+web.get('/', async (context) => {
+  const db = getDatabase(context);
+
+  const products = await db.query.products.findMany();
 
   return context.html(
     <Layout>
-      <Top messages={messages} />
+      <ProductList products={products} />
     </Layout>
   )
 })
 
+web.get('/products/:slug', async (context) => {
+  const slug = context.req.param('slug');
+
+  const db = getDatabase(context);
+  const product = await db.query.products.findFirst({
+    where: eq(products.slug, slug),
+  });
+
+  if (!product) {
+    return context.redirect('/404');
+  }
+
+  return context.html(
+    <Layout>
+      <pre>{JSON.stringify(product, null, 2)}</pre>
+    </Layout>
+  );
+});
