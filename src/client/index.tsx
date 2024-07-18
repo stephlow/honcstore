@@ -3,9 +3,8 @@
 
 import { useState } from "hono/jsx";
 import { createPortal, render, useMemo } from "hono/jsx/dom";
+import { Account, AddToCartButton, Cart } from "../components";
 import { AppContext, type AppState } from "../contexts";
-// import { Account } from "../web";
-import { Account, AddToCartButton, Cart } from "../web";
 
 const COMPONENT_MAP = {
   account: Account,

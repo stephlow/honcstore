@@ -1,5 +1,5 @@
+import { ProductImage } from "../../components";
 import type { SelectProduct } from "../../db";
-import { ProductImage } from "./ProductImage";
 
 type ProductDetailProps = {
   product: SelectProduct;

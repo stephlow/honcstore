@@ -1,8 +1,8 @@
 import { useCallback, useContext } from "hono/jsx";
-import { AppContext } from "../../contexts";
-import type { SelectProduct } from "../../db";
-import { addToCart, createCart, getCartById } from "../../rpc";
-import { Button } from "./Button";
+import { AppContext } from "../contexts";
+import type { SelectProduct } from "../db";
+import { addToCart, createCart, getCartById } from "../rpc";
+import { Button } from "./UI";
 
 type AddToCartButtonProps = {
   product: SelectProduct;

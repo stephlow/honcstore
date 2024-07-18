@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { getDatabase, products } from "../db";
-import { Layout, ProductDetail, ProductList } from "./components";
+import { Layout, ProductDetail, ProductOverview } from "./components";
 
 export * from "./components";
 
@@ -14,7 +14,7 @@ web.get("/", async (context) => {
 
   return context.html(
     <Layout>
-      <ProductList products={products} />
+      <ProductOverview products={products} />
     </Layout>,
   );
 });

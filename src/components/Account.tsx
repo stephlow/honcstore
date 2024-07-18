@@ -1,10 +1,7 @@
 import { useCallback, useContext, useState } from "hono/jsx";
-import { AppContext } from "../../contexts";
-import { authenticate, createAccount } from "../../rpc";
-import { Button } from "./Button";
-import { HoverMenu } from "./HoverMenu";
-import { Input } from "./Input";
-import { Label } from "./Label";
+import { AppContext } from "../contexts";
+import { authenticate, createAccount } from "../rpc";
+import { Button, HoverMenu, Input, Label } from "./UI";
 
 export function Account() {
   const { auth } = useContext(AppContext);
@@ -40,32 +37,6 @@ function Unauthenticated() {
     </HoverMenu>
   );
 }
-
-// async function authenticate(email: string, password: string) {
-//   const client = hc<ApiType>("/api");
-//
-//   const response = await client.auth.$post({
-//     json: {
-//       email,
-//       password,
-//     },
-//   });
-//
-//   return await response.json();
-// }
-//
-// async function createAccount(email: string, password: string) {
-//   const client = hc<ApiType>("/api");
-//
-//   const response = await client.users.$post({
-//     json: {
-//       email,
-//       password,
-//     },
-//   });
-//
-//   return await response.json();
-// }
 
 function LoginForm() {
   const { setAuth } = useContext(AppContext);
