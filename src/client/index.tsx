@@ -1,7 +1,7 @@
 import { hc } from "hono/client";
 import { render, useEffect, useState } from "hono/jsx/dom";
 import type { ApiType } from "../api";
-import { Account, Cart } from "../web/components";
+import { Account, Cart } from "../web";
 
 const COMPONENT_MAP = {
   account: Account,
