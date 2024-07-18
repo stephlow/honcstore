@@ -15,7 +15,7 @@ const authUserSchema = z.object({
 type AuthUser = z.infer<typeof authUserSchema>;
 
 export const authApi = new Hono()
-  .post('/', zValidator('json', authUserSchema), async (context: Context) => {
+  .post("/", zValidator("json", authUserSchema), async (context: Context) => {
     const payload = await context.req.json<AuthUser>();
 
     const db = getDatabase(context);
@@ -23,9 +23,12 @@ export const authApi = new Hono()
       where: eq(users.email, payload.email),
     });
 
+    console.log('found', result);
+
     if (result) {
       const { passwordHash, ...user } = result;
       const passwordMatches = compareSync(payload.password, passwordHash);
+      console.log('passwordMatches', passwordMatches);
 
       if (passwordMatches) {
         const token = await sign({ sub: user.id }, context.env.JWT_SECRET);

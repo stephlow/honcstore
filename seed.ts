@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { hashSync } from "bcrypt-edge";
+import { genSaltSync, hashSync } from "bcrypt-edge";
 import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/neon-http";
 // biome-ignore lint/nursery/useImportRestrictions: Exception for scripts
@@ -17,21 +17,24 @@ if (!SALT_ROUNDS) {
 }
 
 async function seed() {
+  // biome-ignore lint/style/noNonNullAssertion: Throws if missing
+  const salt = genSaltSync(Number.parseInt(SALT_ROUNDS!));
+
   const newUsers: Array<InsertUser> = [
     {
       name: "Laszlo Cravensworth",
       email: "laszlo@cravensworth.com",
-      passwordHash: hashSync("1234", SALT_ROUNDS),
+      passwordHash: hashSync("1234", salt),
     },
     {
       name: "Nadja Antipaxos",
       email: "nadja@antipaxos.com",
-      passwordHash: hashSync("1234", SALT_ROUNDS),
+      passwordHash: hashSync("1234", salt),
     },
     {
       name: "Colin Robinson",
       email: "colin@robinson.com",
-      passwordHash: hashSync("1234", SALT_ROUNDS),
+      passwordHash: hashSync("1234", salt),
     },
   ];
 

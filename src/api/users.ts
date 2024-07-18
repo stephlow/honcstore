@@ -2,7 +2,7 @@ import { Context, Hono } from "hono";
 import { getDatabase, users, insertUserSchema } from "../db";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { hashSync } from "bcrypt-edge";
+import { genSaltSync, hashSync } from "bcrypt-edge";
 
 const newUserSchema = insertUserSchema.omit({ id: true, passwordHash: true }).extend({ password: z.string() });
 
@@ -23,9 +23,11 @@ export const usersApi = new Hono()
 
     const { password, ...payload } = await context.req.json<NewUser>();
 
+    const salt = genSaltSync(context.env.SALT_ROUNDS);
+
     const insertUser = {
       ...payload,
-      passwordHash: hashSync(password, context.env.SALT_ROUNDS)
+      passwordHash: hashSync(password, salt)
     };
 
     const [user] = await db.insert(users).values(insertUser).returning();
