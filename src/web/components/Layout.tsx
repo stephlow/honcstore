@@ -20,6 +20,7 @@ export function Layout({ title, children }: LayoutProps) {
         <script type="module" src="/src/client/index.tsx" />
       )}
       <body>
+        <div id="root" />
         <Header />
         <main className="container mx-auto p-8">{children}</main>
         <Footer />

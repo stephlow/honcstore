@@ -23,12 +23,9 @@ export const authApi = new Hono()
       where: eq(users.email, payload.email),
     });
 
-    console.log('found', result);
-
     if (result) {
       const { passwordHash, ...user } = result;
       const passwordMatches = compareSync(payload.password, passwordHash);
-      console.log('passwordMatches', passwordMatches);
 
       if (passwordMatches) {
         const token = await sign({ sub: user.id }, context.env.JWT_SECRET);

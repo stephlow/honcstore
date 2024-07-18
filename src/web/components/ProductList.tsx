@@ -14,6 +14,7 @@ export function ProductList({ products }: { products: Array<SelectProduct> }) {
               <ProductImage />
               {product.name}
             </a>
+            <div data-mount="addToCart" data-props={JSON.stringify({ product })} />
           </li>
         );
       })}

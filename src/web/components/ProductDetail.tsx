@@ -1,5 +1,4 @@
 import type { SelectProduct } from "../../db";
-import { Button } from "./Button";
 import { ProductImage } from "./ProductImage";
 
 type ProductDetailProps = {
@@ -15,7 +14,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <div className="flex flex-col gap-4">
         <h1>{product.name}</h1>
         <p>{product.description}</p>
-        <Button>Add to cart</Button>
+        <div data-mount="addToCart" data-props={JSON.stringify({ product })} />
       </div>
     </article>
   );

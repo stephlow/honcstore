@@ -11,19 +11,27 @@ type HoverMenuProps = PropsWithChildren<{
 }>;
 
 export function HoverMenu({ trigger, children }: HoverMenuProps) {
+  const canExtend = !!children;
+
   const timeoutId = useRef<ReturnType<typeof setTimeout>>(null);
   const [extended, setExtended] = useState(false);
 
   const onMouseEnter = useCallback(() => {
+    if (!canExtend) {
+      return;
+    }
     timeoutId.current = null;
     setExtended(true);
-  }, []);
+  }, [canExtend]);
 
   const onMouseLeave = useCallback(() => {
+    if (!canExtend) {
+      return;
+    }
     timeoutId.current = setTimeout(() => {
       setExtended(false);
     }, 1000);
-  }, []);
+  }, [canExtend]);
 
   return (
     <div

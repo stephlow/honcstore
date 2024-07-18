@@ -1,52 +1,44 @@
-import { hc } from "hono/client";
-import { render, useEffect, useState } from "hono/jsx/dom";
-import type { ApiType } from "../api";
-import { Account, Cart } from "../web";
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+
+import { useState } from "hono/jsx";
+import { createPortal, render, useMemo } from "hono/jsx/dom";
+import { AppContext, type AppState } from "../contexts";
+// import { Account } from "../web";
+import { Account, AddToCartButton, Cart } from "../web";
 
 const COMPONENT_MAP = {
   account: Account,
+  addToCart: AddToCartButton,
   cart: Cart,
 };
 
-async function getProducts() {
-  const client = hc<ApiType>("/api");
+function Root() {
+  const [auth, setAuth] = useState<AppState["auth"]>(null);
+  const [cart, setCart] = useState<AppState["cart"]>();
 
-  const result = await client.products.$get();
-  const { products } = await result.json();
-  return products;
-}
-
-function Products() {
-  const [products, setProducts] = useState<
-    Awaited<ReturnType<typeof getProducts>>
-  >([]);
-
-  async function load() {
-    setProducts(await getProducts());
-  }
-
-  useEffect(() => {
-    load();
+  const portals = useMemo(() => {
+    return Object.entries(COMPONENT_MAP).flatMap(([key, Component]) => {
+      const elements = [
+        ...document.querySelectorAll(`[data-mount="${key}"]`),
+      ] as Array<HTMLElement>;
+      return elements.map((element) =>
+        createPortal(
+          <Component {...JSON.parse(element.dataset.props ?? "{}")} />,
+          element,
+        ),
+      );
+    });
   }, []);
 
   return (
-    <ul>
-      {products.map((product) => {
-        return (
-          <li key={product.id}>
-            {product.name}
-            {product.description}
-          </li>
-        );
-      })}
-    </ul>
+    <AppContext.Provider value={{ auth, setAuth, cart, setCart }}>
+      {portals}
+    </AppContext.Provider>
   );
 }
 
-for (const [key, Component] of Object.entries(COMPONENT_MAP)) {
-  // @ts-ignore
-  const elements = [...document.querySelectorAll(`[data-mount="${key}"]`)];
-  for (const element of elements) {
-    render(<Component />, element);
-  }
+const root = document.getElementById("root");
+if (root) {
+  render(<Root />, root);
 }

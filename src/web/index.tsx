@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { getDatabase, products } from "../db";
 import { Layout, ProductDetail, ProductList } from "./components";
 
-export * from './components'
+export * from "./components";
 
 export const web = new Hono();
 

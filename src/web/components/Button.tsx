@@ -1,9 +1,8 @@
-import type { ReactNode } from "hono/jsx";
+import type { PropsWithChildren } from "hono/jsx";
 
-type ButtonProps = {
+type ButtonProps = PropsWithChildren<{
   onClick?: () => void;
-  children: ReactNode;
-};
+}>;
 
 export function Button({ children, onClick }: ButtonProps) {
   return (
